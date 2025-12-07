@@ -1,10 +1,10 @@
-# Simple workflow for deploying static content to GitHub Pages
-name: Deploy static content to Pages
+# .github/workflows/deploy-pages.yml
+name: Deploy static content to GitHub Pages
 
 on:
   push:
-    branches: ["main"]
-  workflow_dispatch:
+    branches: ["main"]   # Deploy otomatis saat ada push ke main
+  workflow_dispatch:     # Bisa dijalankan manual dari tab Actions
 
 permissions:
   contents: read
@@ -22,18 +22,21 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      # 1. Checkout repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
+      # 2. Setup GitHub Pages
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
+      # 3. Upload seluruh repository sebagai artifact
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload hanya folder 'aliqa'
-          path: './aliqa'
+          path: '.'   # Upload seluruh repository
 
+      # 4. Deploy ke GitHub Pages
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
